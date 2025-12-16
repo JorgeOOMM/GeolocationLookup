@@ -1,0 +1,127 @@
+//
+//  IPAddressGeolocationLookup.swift
+//  IPAddressGeolocationLookup
+//
+//  Created by Mac on 11/12/25.
+//
+import Foundation
+
+// MARK: FileCacheable
+/// GeolocationLookup is a class that locate a IPRange types from IP Address string
+class IPAddressGeolocationLookup: FileCacheable {
+    
+    typealias Handler = (Result<IPRangeLocation, Error>) -> Void
+    
+    private let locator: IPAddressable&IPAddressRangeLocatorProtocol&IPAddressPrintable
+    // Don't limit the lifetime of the cache entries
+    internal lazy var cache = Cache<String, IPRangeLocation>(dateProvider: nil)
+    
+    init(locator: IPAddressable&IPAddressRangeLocatorProtocol&IPAddressPrintable) {
+        self.locator = locator
+    }
+}
+
+// MARK: IPAddressGeolocationLookup
+extension IPAddressGeolocationLookup {
+    func location(with address: String) throws -> IPRangeLocation {
+        guard !address.isEmpty else {
+            print("Empty parameter address error.")
+            throw GeolocationLookupError.parameterError
+        }
+        if let cached = cache[address] {
+            // Cache hit
+            return cached
+        }
+        guard let addressUInt32 = locator.stringIPToIPNumber(string: address) else {
+            print("Conversion of address \(address) failed.")
+            throw GeolocationLookupError.conversionError
+        }
+        if let location = locator.locate(from: UInt32(bigEndian: addressUInt32)) {
+            self.cache[address] = location
+            return location
+        } else {
+            print("The address \(address) not found in location database.")
+            throw GeolocationLookupError.locationError
+        }
+    }
+}
+
+// MARK: IPAddressPrintable
+extension IPAddressGeolocationLookup: IPAddressPrintable {
+    ///  Print a geo location from a IP address string
+    ///
+    /// - Parameter address: IP address string
+    func printAddress(for address: String) {
+        locator.printAddress(for: address)
+    }
+}
+// MARK: IPAddressGeolocationLookup
+extension IPAddressGeolocationLookup {
+    func start(with location: IPRangeLocation) -> String {
+        locator.numberIPToStringIP(number: UInt32(bigEndian: location.start))
+    }
+    func end(with location: IPRangeLocation) -> String {
+        locator.numberIPToStringIP(number: UInt32(bigEndian: location.end))
+    }
+    func country(with location: IPRangeLocation) -> String {
+        guard !location.alpha2.isEmpty else {
+            return ""
+        }
+        guard let country = Countries.shared.names[location.alpha2] else {
+            return ""
+        }
+        return country
+    }
+    func subdivision(with location: IPRangeLocation) -> String {
+        location.subdiv
+    }
+    func flag(with location: IPRangeLocation) -> String {
+        guard !location.alpha2.isEmpty else {
+            return ""
+        }
+        return Countries.flag(from: location.alpha2)
+    }
+}
+// MARK: IPAddressGeolocationLookup
+extension IPAddressGeolocationLookup {
+    func country(for address: String) -> String? {
+        do {
+            let range = try location(with: address)
+            return self.country(with: range)
+        } catch {
+            return nil
+        }
+    }
+    func start(for address: String) -> String? {
+        do {
+            let range = try location(with: address)
+            return self.start(with: range)
+        } catch {
+            return nil
+        }
+    }
+    func end(for address: String) -> String? {
+        do {
+            let range = try location(with: address)
+            return self.end(with: range)
+        } catch {
+            return nil
+        }
+    }
+    func subdivision(for address: String) -> String? {
+        do {
+            let range = try location(with: address)
+            return self.subdivision(with: range)
+        } catch {
+            return nil
+        }
+    }
+    func flag(for address: String) -> String? {
+        do {
+            let range = try location(with: address)
+            return self.flag(with: range)
+        } catch {
+            return nil
+        }
+    }
+}

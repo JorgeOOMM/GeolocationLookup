@@ -1,0 +1,45 @@
+//
+//  GeoCoordinateLookup.swift
+//  GeolocationLookup
+//
+//  Created by Mac on 14/12/25.
+//
+
+import CoreLocation
+
+// MARK: GeoCoordinate
+extension GeoCoordinate {
+    var location: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(
+            latitude: latitude,
+            longitude: longitude
+        )
+    }
+}
+
+/// GeoCoordinateLookup is a class that locate a Geocoordinate type from Location Address string
+class GeoCoordinateLookup: FileCacheable {
+    typealias Handler = (Result<GeoCoordinate, Error>) -> Void
+    
+    private let geocoder: GeoCoordinateCoderProtocol
+    // Don't limit the lifetime of the cache entries
+    internal lazy var cache = Cache<String, GeoCoordinate>(dateProvider: nil)
+    
+    init(geocoder: GeoCoordinateCoderProtocol = GeoCoordinateCoder()) {
+        self.geocoder = geocoder
+    }
+}
+// MARK: GeoCoordinateLookup
+extension GeoCoordinateLookup {
+    func location(with address: String) async throws -> GeoCoordinate {
+        guard !address.isEmpty else {
+            throw GeolocationLookupError.parameterError
+        }
+        if let cached = cache[address] {
+            return cached
+        }
+        let location = try await geocoder.coordinate(with: address)
+        self.cache[address] = location
+        return location
+    }
+}
