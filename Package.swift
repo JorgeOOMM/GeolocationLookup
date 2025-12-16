@@ -36,6 +36,7 @@ let package = Package(
         .executableTarget(
             name: "Converter",
             dependencies: [
+		"GeolocationLookup",
                 .product(name: "OrderedCollections", package: "swift-collections")
             ],
             exclude: ["IP-COUNTRY.7z"]
