@@ -6,8 +6,8 @@
 import Foundation
 
 // swiftlint:disable legacy_objc_type
-class Countries {
-    var locale: Locale
+final class Countries: Sendable {
+    let locale: Locale
     
     init(identifier: String) {
         self.locale = Locale(identifier: identifier)
