@@ -16,7 +16,7 @@ protocol IPRangeLocationProtocol {
 }
 
 // MARK: IPRangeLocation (Internet Protocol version 4 (IPv4))
-struct IPRangeLocation: IPRangeLocationProtocol, Codable {
+public struct IPRangeLocation: IPRangeLocationProtocol, Codable {
     /// Start of address  range  in network byte order
     var start: UInt32
     /// End of address  range in network byte order
@@ -36,8 +36,8 @@ struct IPRangeLocationIdx: IPRangeLocationProtocol {
 }
 
 // MARK: GeoCoordinate
-struct GeoCoordinate: Codable {
-    let name: String
-    let latitude: Double
-    let longitude: Double
+public struct GeoCoordinate: Codable, Sendable {
+    public let name: String
+    public let latitude: Double
+    public let longitude: Double
 }

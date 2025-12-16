@@ -6,7 +6,7 @@
 //
 
 // MARK: IPAddressable
-protocol IPAddressable {
+public protocol IPAddressable {
     /// Convert IP address string to UInt32
     ///
     /// - Parameter string: Address string
@@ -24,14 +24,14 @@ protocol IPAddressable {
 }
 
 // MARK: IPAddressConverter - Little endian
-class IPAddressConverterLE: IPAddressable {
+public class IPAddressConverterLE: IPAddressable {
     /// Convert IP address string to UInt32 host endian
     ///
     /// - Parameter string: Address string
     ///
     /// - Returns: UInt32
     ///
-    func stringIPToIPNumber(string: String) -> UInt32? {
+    public func stringIPToIPNumber(string: String) -> UInt32? {
         let octets: [UInt32] = string.split(separator: ".").compactMap { UInt32($0) }
         guard octets.count == 4 else {
             return nil
@@ -49,7 +49,7 @@ class IPAddressConverterLE: IPAddressable {
     ///
     /// - Returns: String
     ///
-    func numberIPToStringIP(number: UInt32) -> String {
+    public func numberIPToStringIP(number: UInt32) -> String {
         guard number > 0 else {
             return ""
         }
@@ -63,7 +63,7 @@ class IPAddressConverterLE: IPAddressable {
 }
 
 // MARK: IPAddressConverterBE - Big endian
-class IPAddressConverterBE: IPAddressable {
+public class IPAddressConverterBE: IPAddressable {
     
     /// Convert IP address string to UInt32 network endian
     ///
@@ -71,7 +71,7 @@ class IPAddressConverterBE: IPAddressable {
     ///
     /// - Returns: UInt32
     ///
-    func stringIPToIPNumber(string: String) -> UInt32? {
+    public func stringIPToIPNumber(string: String) -> UInt32? {
         let octets: [UInt32] = string.split(separator: ".").compactMap { UInt32($0) }
         guard octets.count == 4 else {
             return nil
@@ -90,7 +90,7 @@ class IPAddressConverterBE: IPAddressable {
     /// - Returns: String
     ///
     ///
-    func numberIPToStringIP(number: UInt32) -> String {
+    public func numberIPToStringIP(number: UInt32) -> String {
         guard number > 0 else {
             return ""
         }

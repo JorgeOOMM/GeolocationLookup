@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: IPAddressRangeBinaryFileLocator
-class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
+public class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     private var subdivs: [Substring] = []
     private var fileHandle: FileHandle = .nullDevice
     private var fileSize: UInt64 = 0
@@ -67,7 +67,7 @@ class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     ///
     /// - Returns: IPRangeLocation
     func recordLocation(from record: IPRangeLocationIdx) throws -> IPRangeLocation {
-        guard let alpha2 = Countries.shared.indexes.key(from: UInt32(record.alpha2Idx)) else {
+        guard let alpha2 = Countries.shared.index(for: UInt32(record.alpha2Idx)) else {
             assertionFailure("Unexpected invalid index for alpha2.")
             throw GeolocationLookupError.alpha2IndexError
         }
@@ -93,7 +93,7 @@ class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     ///  If arr[mid] is less than the target value, set the start to mid + 1 .
     ///
     ///
-    func locate(from address: UInt32) -> IPRangeLocation? {
+    public func locate(from address: UInt32) -> IPRangeLocation? {
         var lowIndex = 0
         var highIndex = Int(fileSize) / sizeofRange
         var midIndex = 0
@@ -122,7 +122,7 @@ class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     ///
     /// - Returns: Bool
     ///
-    func load() -> Bool {
+    public func load() -> Bool {
         do {
             try openBinaryFile()
         } catch {
@@ -130,5 +130,9 @@ class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
             return false
         }
         return loadFileStrings()
+    }
+    
+    public init() {
+        
     }
 }

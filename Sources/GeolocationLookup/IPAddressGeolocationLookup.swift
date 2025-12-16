@@ -8,7 +8,7 @@ import Foundation
 
 // MARK: FileCacheable
 /// GeolocationLookup is a class that locate a IPRange types from IP Address string
-class IPAddressGeolocationLookup: FileCacheable {
+public class IPAddressGeolocationLookup: FileCacheable {
     
     typealias Handler = (Result<IPRangeLocation, Error>) -> Void
     
@@ -16,7 +16,7 @@ class IPAddressGeolocationLookup: FileCacheable {
     // Don't limit the lifetime of the cache entries
     internal lazy var cache = Cache<String, IPRangeLocation>(dateProvider: nil)
     
-    init(locator: IPAddressable&IPAddressRangeLocatorProtocol&IPAddressPrintable) {
+    public init(locator: IPAddressable&IPAddressRangeLocatorProtocol&IPAddressPrintable = IPAddressRangeGeolocation()) {
         self.locator = locator
     }
 }
@@ -51,31 +51,31 @@ extension IPAddressGeolocationLookup: IPAddressPrintable {
     ///  Print a geo location from a IP address string
     ///
     /// - Parameter address: IP address string
-    func printAddress(for address: String) {
+    public func printAddress(for address: String) {
         locator.printAddress(for: address)
     }
 }
 // MARK: IPAddressGeolocationLookup
 extension IPAddressGeolocationLookup {
-    func start(with location: IPRangeLocation) -> String {
+    public func start(with location: IPRangeLocation) -> String {
         locator.numberIPToStringIP(number: UInt32(bigEndian: location.start))
     }
-    func end(with location: IPRangeLocation) -> String {
+    public func end(with location: IPRangeLocation) -> String {
         locator.numberIPToStringIP(number: UInt32(bigEndian: location.end))
     }
-    func country(with location: IPRangeLocation) -> String {
+    public func country(with location: IPRangeLocation) -> String {
         guard !location.alpha2.isEmpty else {
             return ""
         }
-        guard let country = Countries.shared.names[location.alpha2] else {
+        guard let country = Countries.shared.name(for: location.alpha2) else {
             return ""
         }
         return country
     }
-    func subdivision(with location: IPRangeLocation) -> String {
+    public func subdivision(with location: IPRangeLocation) -> String {
         location.subdiv
     }
-    func flag(with location: IPRangeLocation) -> String {
+    public func flag(with location: IPRangeLocation) -> String {
         guard !location.alpha2.isEmpty else {
             return ""
         }
@@ -84,7 +84,7 @@ extension IPAddressGeolocationLookup {
 }
 // MARK: IPAddressGeolocationLookup
 extension IPAddressGeolocationLookup {
-    func country(for address: String) -> String? {
+    public func country(for address: String) -> String? {
         do {
             let range = try location(with: address)
             return self.country(with: range)
@@ -92,7 +92,7 @@ extension IPAddressGeolocationLookup {
             return nil
         }
     }
-    func start(for address: String) -> String? {
+    public func start(for address: String) -> String? {
         do {
             let range = try location(with: address)
             return self.start(with: range)
@@ -100,7 +100,7 @@ extension IPAddressGeolocationLookup {
             return nil
         }
     }
-    func end(for address: String) -> String? {
+    public func end(for address: String) -> String? {
         do {
             let range = try location(with: address)
             return self.end(with: range)
@@ -108,7 +108,7 @@ extension IPAddressGeolocationLookup {
             return nil
         }
     }
-    func subdivision(for address: String) -> String? {
+    public func subdivision(for address: String) -> String? {
         do {
             let range = try location(with: address)
             return self.subdivision(with: range)
@@ -116,7 +116,7 @@ extension IPAddressGeolocationLookup {
             return nil
         }
     }
-    func flag(for address: String) -> String? {
+    public func flag(for address: String) -> String? {
         do {
             let range = try location(with: address)
             return self.flag(with: range)

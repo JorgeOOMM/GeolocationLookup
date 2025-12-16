@@ -7,7 +7,7 @@
 
 // MARK: IPAddressRangeLocatorProtocol protocol
 /// Protocol for locate the `IPRange` location for a ip `address`
-protocol IPAddressRangeLocatorProtocol {
+public protocol IPAddressRangeLocatorProtocol {
     /// Find the location for a netword address
     ///
     /// - Note IP (Internet Protocol) uses big-endian byte order, also known as network byte order

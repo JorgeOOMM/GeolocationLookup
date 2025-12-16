@@ -8,7 +8,7 @@
 import CoreLocation
 
 // MARK: GeocoderProtocol
-protocol GeoCoordinateCoderProtocol {
+public protocol GeoCoordinateCoderProtocol {
     /// Get the GeoCoordinate from a country location.
     /// For example country state, country province, country subdivision
     ///
@@ -20,7 +20,7 @@ protocol GeoCoordinateCoderProtocol {
 }
 
 // MARK: Geocoder: GeocoderProtocol
-struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
+public struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
     typealias GeoCoordinateCoderHandler = (Result<GeoCoordinate, Error>)
     private func geocodeIPAddress(
         with address: String,
@@ -44,6 +44,10 @@ struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
         }
     }
     
+    public init() {
+        
+    }
+    
     /// Get the GeoCoordinate from a country location.
     /// For example country state, country province, country subdivision
     ///
@@ -51,7 +55,7 @@ struct GeoCoordinateCoder: GeoCoordinateCoderProtocol {
     ///
     /// - Returns: GeoCoordinate
     ///
-    func coordinate(with address: String) async throws -> GeoCoordinate {
+    public func coordinate(with address: String) async throws -> GeoCoordinate {
         try await withCheckedThrowingContinuation { continuation in
             geocodeIPAddress(with: address ) { result in
                 switch result {

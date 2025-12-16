@@ -6,11 +6,25 @@
 import Foundation
 
 // swiftlint:disable legacy_objc_type
-final class Countries: Sendable {
+final class Countries {
     let locale: Locale
-    
+    private var indexes: [String: UInt32] = [:]
+    private var countries: [String: String] = [:]
     init(identifier: String) {
         self.locale = Locale(identifier: identifier)
+        for (index, code) in NSLocale.isoCountryCodes.enumerated() {
+            let id: String = Locale.identifier(fromComponents: [
+                NSLocale.Key.countryCode.rawValue: code
+            ])
+            guard let name = (self.locale as NSLocale).displayName(
+                forKey: .identifier,
+                value: id
+            ) else {
+                continue
+            }
+            countries[code] = name
+            indexes[code] = UInt32(index + 1)
+        }
     }
     static func flag(from country: String) -> String {
         // The flags start at code point 0x1F1E6. The offset for "A" is 65. 0x1F1E6 - 65 = 127397
@@ -24,34 +38,16 @@ final class Countries: Sendable {
         return output
     }
     
-    lazy var names: [String: String] = {
-        var countries: [String: String] = [:]
-        for code in NSLocale.isoCountryCodes {
-            let id: String = Locale.identifier(fromComponents: [
-                NSLocale.Key.countryCode.rawValue: code
-            ])
-            guard let name = (self.locale as NSLocale).displayName(
-                forKey: .identifier,
-                value: id
-            ) else {
-                continue
-            }
-            countries[code] = name
-        }
-        return countries
-    }()
-    
-    lazy var indexes: [String: UInt32] = {
-        var indexes: [String: UInt32] = [:]
-        for (index, code) in NSLocale.isoCountryCodes.enumerated() {
-            indexes[code] = UInt32(index + 1)
-        }
-        return indexes
-    }()
+    func name(for code: String) -> String? {
+        return countries[code]
+    }
+    func index(for code: UInt32) -> String? {
+        return indexes.key(from: code)
+    }
 }
 
 extension Countries {
-    static let shared = Countries(identifier: "en_EN")
+    nonisolated(unsafe) static let shared = Countries(identifier: "en_EN")
 }
 
 // swiftlint:enable legacy_objc_type
