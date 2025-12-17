@@ -6,7 +6,7 @@
 
 import Foundation
 import ArgumentParser
-import GeolocationLookup
+import IPAddress2City
 
 // Optimization for reduce the size of the original CSV file
 //

@@ -1,12 +1,12 @@
 //
 //  IPAddressGeolocationLookupPerformanceTests.swift
-//  GeolocationLookup
+//  IPAddress2City
 //
 //  Created by Mac on 15/12/25.
 //
 
 import XCTest
-@testable import GeolocationLookup
+@testable import IPAddress2City
 
 let listAddress: [String] = [
     "101.47.17.247",

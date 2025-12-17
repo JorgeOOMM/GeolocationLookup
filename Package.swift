@@ -4,13 +4,13 @@
 import PackageDescription
 
 let package = Package(
-    name: "GeolocationLookup",
+    name: "IPAddress2City",
     platforms: [.iOS(.v14), .macOS(.v13), .watchOS(.v5), .tvOS(.v12)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "GeolocationLookup",
-            targets: ["GeolocationLookup"]),
+            name: "IPAddress2City",
+            targets: ["IPAddress2City"]),
         .executable(
             name: "Converter",
             targets: ["Converter"])
@@ -31,7 +31,7 @@ let package = Package(
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "GeolocationLookup",
+            name: "IPAddress2City",
             resources: [
                 .copy("IPCOUNTRY.bin"),
                 .copy("SUBDIVS.bin")
@@ -42,13 +42,13 @@ let package = Package(
             dependencies: [
                 .product(name: "OrderedCollections", package: "swift-collections"),
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                "GeolocationLookup"
+                "IPAddress2City"
             ],
             exclude: ["IP-COUNTRY.7z"]
         ),
         .testTarget(
-            name: "GeolocationLookupTests",
-            dependencies: ["GeolocationLookup"]
+            name: "IPAddress2CityTests",
+            dependencies: ["IPAddress2City"]
         ),
     ]
 )

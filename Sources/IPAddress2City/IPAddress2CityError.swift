@@ -1,14 +1,14 @@
 //
-//  GeolocationLookupError.swift
-//  GeolocationLookup
+//  IPAddress2CityError.swift
+//  IPAddress2City
 //
 //  Created by Mac on 15/12/25.
 //
 
 import Foundation
 
-// MARK: GeolocationLookupError
-enum GeolocationLookupError: Error {
+// MARK: IPAddress2CityError
+enum IPAddress2CityError: Error {
     case conversionError
     case locationError
     case memoryError

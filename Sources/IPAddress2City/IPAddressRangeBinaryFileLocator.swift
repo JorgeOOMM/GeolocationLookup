@@ -1,6 +1,6 @@
 //
 //  IPAddressRangeBinaryFileLocator.swift
-//  GeolocationLookup
+//  IPAddress2City
 //
 //  Created by Mac on 10/12/25.
 //
@@ -30,7 +30,7 @@ public class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
             buffer.baseAddress?.assumingMemoryBound(to: IPRangeLocationIdx.self).pointee
         }
         guard let result = result else {
-            throw GeolocationLookupError.memoryError
+            throw IPAddress2CityError.memoryError
         }
         return result
     }
@@ -69,7 +69,7 @@ public class IPAddressRangeBinaryFileLocator: IPAddressRangeLocatorProtocol {
     func recordLocation(from record: IPRangeLocationIdx) throws -> IPRangeLocation {
         guard let alpha2 = Countries.shared.code(for: UInt32(record.alpha2Idx)) else {
             assertionFailure("Unexpected invalid index for alpha2.")
-            throw GeolocationLookupError.alpha2IndexError
+            throw IPAddress2CityError.alpha2IndexError
         }
         let subdiv = self.subdivs[Int(record.subdivIdx)].replacingOccurrences(of: "#", with: " - ")
         return IPRangeLocation(

@@ -6,7 +6,7 @@
 
 
 import XCTest
-@testable import GeolocationLookup
+@testable import IPAddress2City
 
 func xCTAssertThrowsError<T>(
     _ expression: @autoclosure () async throws -> T,

@@ -5,7 +5,7 @@
 //
 
 import XCTest
-@testable import GeolocationLookup
+@testable import IPAddress2City
 
 final class IPAddressConverterLETests: XCTestCase {
     var converterLE = IPAddressConverterLE()

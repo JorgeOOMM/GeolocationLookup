@@ -1,13 +1,13 @@
 //
 //  IPAddressRangesConverter.swift
-//  GeolocationLookup
+//  IPAddress2City
 //
 //  Created by Mac on 9/12/25.
 //
 
 import Foundation
 import OrderedCollections
-import GeolocationLookup
+import IPAddress2City
 
 
 // MARK: ConverterProtocol protocol

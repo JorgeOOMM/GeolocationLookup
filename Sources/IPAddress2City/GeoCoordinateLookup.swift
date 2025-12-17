@@ -1,6 +1,6 @@
 //
 //  GeoCoordinateLookup.swift
-//  GeolocationLookup
+//  IPAddress2City
 //
 //  Created by Mac on 14/12/25.
 //
@@ -33,7 +33,7 @@ public class GeoCoordinateLookup: FileCacheable {
 extension GeoCoordinateLookup {
     public func location(with address: String) async throws -> GeoCoordinate {
         guard !address.isEmpty else {
-            throw GeolocationLookupError.parameterError
+            throw IPAddress2CityError.parameterError
         }
         if let cached = cache[address] {
             return cached

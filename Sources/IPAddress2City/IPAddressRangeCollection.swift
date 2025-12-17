@@ -1,6 +1,6 @@
 //
 //  IPAddressRangeCollection.swift
-//  GeolocationLookup
+//  IPAddress2City
 //
 //  Created by Mac on 13/12/25.
 //

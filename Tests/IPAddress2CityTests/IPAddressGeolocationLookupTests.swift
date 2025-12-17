@@ -6,7 +6,7 @@
 
 
 import XCTest
-@testable import GeolocationLookup
+@testable import IPAddress2City
 
 extension IPRangeLocation {
     static var null = IPRangeLocation(start: 0, end: 0, alpha2: "", subdiv: "")

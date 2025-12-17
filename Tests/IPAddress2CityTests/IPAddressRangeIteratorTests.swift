@@ -7,7 +7,7 @@
 
 
 import XCTest
-@testable import GeolocationLookup
+@testable import IPAddress2City
 
 final class IPAddressRangeIteratorTests: XCTestCase {
     
